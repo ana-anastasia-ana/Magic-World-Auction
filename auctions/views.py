@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from .models import User, Category, Listing, Watchlist, Comment, Bid
+from .models import User, Category, Listing, Watchlist, Comment, Bid, Watchlist
 from django.contrib import messages
 from django.db.models import Max
 from django.core.exceptions import ValidationError
@@ -182,6 +182,19 @@ def remove_from_watchlist(request, listing_id):
 
     # Redirect back to the view_listing page
     return redirect('view_listing', listing_id=listing_id)
+
+@login_required
+def watchlist(request):
+    user = request.user
+
+    try:
+        watchlist = user.watchlist
+    except Watchlist.DoesNotExist:
+        watchlist = None
+
+    listings = watchlist.listings.all() if watchlist else []
+
+    return render(request, "auctions/watchlist.html", {"listings": listings})
 
 @login_required
 def close_auction(request, listing_id):
