@@ -1,0 +1,59 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+  <div class="container">
+    <h2 class="mt-4">Active Listings</h2>
+    <form action="" method="POST" class="form-inline">
+        {% csrf_token %}
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="category" class="sr-only">Category:</label>
+            <select class="form-control" name="category" required>
+                <option value="" {% if not selected_category_id %}selected{% endif %}>Choose Categories</option>
+                <option value="" {% if selected_category_id == "" %}selected{% endif %}>All</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if selected_category_id == category.id %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Filter</button>
+    </form>
+    <br>
+    {% if listings %}
+      <div class="row">
+        {% for listing in listings %}
+          <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow">
+              <img src="{{ listing.image_url }}" class="card-img-top" alt="{{ listing.title }}">
+              <div class="card-body">
+                <h5 class="card-title">{{ listing.title }}</h5>
+                <p class="card-text">{{ listing.description }}</p>
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Starting Bid: ${{ listing.starting_bid }}</li>
+                <li class="list-group-item">Category: {{ listing.category }}</li>
+              </ul>
+              <div class="card-footer">
+                <a href="{% url 'view_listing' listing.id %}" class="btn btn-primary">View Listing</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No active listings at the moment.</p>
+    {% endif %}
+  </div>
+
+  <style>
+    .card {
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+{% endblock %}

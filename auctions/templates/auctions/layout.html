@@ -1,0 +1,136 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}Enchanted Auctions{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xw5z9Uz8LZ8S5Tz4PO4tHqrOT5KdKg2eV4TjYH02/cRJw/1uYh21I5gDSJ7U2v2iNl2a9g1d4JuZ6oysZ9ckFQ==" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Harry+Potter&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="{% static 'auctions/magical-styles.css' %}" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('{% static "auctions/background.jpg" %}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: #000;
+            font-family: 'Harry Potter', cursive;
+        }
+        header {
+            background-color: rgba(29, 53, 87, 0.8);
+            padding: 50px 20px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+            color: #ffd700;
+        }
+        .user-info {
+            font-size: 1.2em;
+            color: #aaa;
+        }
+        nav {
+            background-color: rgba(69, 123, 157, 0.8);
+            padding: 10px;
+        }
+        .navbar-light .navbar-nav .nav-link {
+            color: #fff;
+        }
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: #ffd700;
+        }
+        main {
+            padding: 20px 0;
+        }
+        .product-card {
+            background-color: rgba(255, 255, 255, 0.9); /* Set a semi-transparent white background */
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+        .product-title {
+            font-weight: bold;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            font-family: 'Harry Potter', cursive;
+        }
+        .product-description {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .bid-button {
+            margin-top: 10px;
+        }
+        footer {
+            background-color: rgba(29, 53, 87, 0.8);
+            color: #ffd700;
+            padding: 20px 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="magical-theme">
+    <header>
+        <h1>Enchanted Auctions</h1>
+        <div class="user-info">
+            {% if user.is_authenticated %}
+                <p>Sorcerer's name: <strong>{{ user.username }}</strong></p>
+            {% else %}
+                <p>Muggle detected! 🧙‍♂️ Please Log In</p>
+            {% endif %}
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'create_listing' %}">Create Listing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container mt-4">
+        <div class="row">
+            
+                {% block body %}
+                <!-- Sample Product Card -->
+                <div class="product-card">
+                    <h2 class="product-title">Product Title</h2>
+                    <p class="product-description">Description of the magical product. </p>
+                    <button class="btn btn-primary bid-button">Bid Now</button>
+                </div>
+                {% endblock %}
+            
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Enchanted Auctions - Created by Ana</p>
+    </footer>
+
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-aGqjjz/bCA4QIx6tIy2bDFBy9nz9ACe4QhXwu7D5/AgV4IuMkkpNKJUaFbFySma" crossorigin="anonymous"></script>
+    <script src="https
